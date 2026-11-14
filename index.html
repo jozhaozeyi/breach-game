@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111a20"><title>零界突入 / BREACH</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <canvas id="game" aria-label="零界突入：二维俯视射击闯关游戏"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <header><a class="brand" href="./index.html"><span class="brand-mark">⌁</span> BREACH <small>零界突入</small></a><div class="top-actions"><button id="sound" aria-pressed="true">声音 <span>开</span></button><button id="pause" hidden>暂停 <kbd>P</kbd></button></div></header>
+  <section id="briefing" class="briefing">
+    <div class="kicker"><i></i> SINGLE OPERATOR / 近未来战术行动</div>
+    <h1>逐室<br>突破<span>。</span></h1>
+    <p class="intro">一把霰弹枪，一条出路。<br>解救工程师，炸毁设施，抵挡增援。<br>六场行动，六种突围方式。</p>
+    <div class="brief-controls"><span><b>W A S D</b> 移动</span><span><b>← / →</b> 平滑连续转向</span><span><b>Q / E</b> 瞄准微调</span><span><b>空格</b> 按住连续开火</span><span><b>G</b> 投掷手雷</span><span><b>F</b> 开关门 / 交互</span><span><b>R</b> 换弹</span><span><b>SHIFT</b> 冲刺</span><span><b>V</b> 医疗包</span></div>
+    <button id="start" class="primary">开始突入 <span>Enter ↵</span></button>
+    <div class="chapter-preview"><span>01 解救护送</span><span>02 定点爆破</span><span>03 守点撤离</span><span>04 军械库拆弹</span><span>05 补给搬运</span><span>06 供电核心</span></div>
+    <small class="desktop-note">纯键盘 · 方向键选菜单 / Enter 确认 · M 声音</small>
+  </section>
+  <div id="preview-tag"><span>LIVE FEED / 01</span><strong>城市前哨</strong><small>解救 · 爆破 · 坚守</small></div>
+  <section id="hud" hidden aria-label="行动状态">
+    <div class="vitals"><div class="vital-title"><span>OPERATOR / JO</span><strong id="hp">100</strong></div><div class="health-track"><i id="hpFill"></i></div><div class="ammo"><strong id="mag">8</strong><span>/ <b id="reserve">48</b></span><small id="weaponState">SG-8 / 战术霰弹枪</small></div><div class="supplies"><span id="med">医疗包 2</span><span id="dash">冲刺就绪</span></div></div>
+    <div class="objective"><span id="chapter">01 / 城市前哨</span><strong id="objective">解救被困工程师</strong><small id="objectiveDetail">解救工程师并护送至出口。</small></div>
+    <div class="key-guide">WASD 移动 · ←/→ 按住转向 · Q/E 微调 · 空格 射击 · F 交互 · G 手雷 · R 换弹 · Shift 冲刺 · V 治疗 · Esc 暂停</div><div class="mission-meta"><span id="clock">00:00</span><span id="eliminated">已压制 0</span></div>
+  </section>
+  <div id="mission-panel" role="status" hidden></div><div id="prompt" hidden></div><div id="notice" role="status" aria-live="polite"></div>
+  <section id="overlay" class="overlay" hidden><div class="dialog"><span id="dialogLabel" class="kicker">行动暂停</span><h2 id="dialogTitle">稍作调整。</h2><p id="dialogText"></p><button id="resume" class="primary">继续行动 <span>→</span></button><button id="next" class="primary" hidden>下一关 <span>→</span></button><button id="restart" class="secondary">重试本关</button><button id="quit" class="text-button">返回开始界面</button></div></section>
+  <dialog id="quitDialog"><h2>结束这次行动？</h2><p>返回开始界面后，本次关卡进度会重置。</p><div><button id="cancelQuit" class="secondary">继续游戏</button><button id="confirmQuit" class="primary">返回开始</button></div></dialog>
+  <noscript>请在支持 JavaScript 的浏览器中打开游戏。</noscript>
+  <script src="levels.js"></script><script src="render.js"></script><script src="missions.js"></script><script src="extra-missions.js"></script><script src="game.js"></script>
+</body></html>
