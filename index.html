@@ -1,28 +1,50 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111a20"><title>零界突入 / BREACH</title><link rel="stylesheet" href="style.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="零界突入：支持电脑和手机的写实2D战术行动游戏，36关连续剧情、顺序解锁、干员技能与二楼地形。"><meta name="theme-color" content="#17232d"><title>零界突入 · 写实 2D 战术行动</title><link rel="stylesheet" href="side-style.css"><link rel="stylesheet" href="realistic-style.css"><link rel="stylesheet" href="mobile-style.css"></head>
 <body>
-  <canvas id="game" aria-label="零界突入：二维俯视射击闯关游戏"></canvas>
-  <div class="grain" aria-hidden="true"></div>
-  <header><a class="brand" href="./index.html"><span class="brand-mark">⌁</span> BREACH <small>零界突入</small></a><div class="top-actions"><button id="sound" aria-pressed="true">声音 <span>开</span></button><button id="pause" hidden>暂停 <kbd>P</kbd></button></div></header>
-  <section id="briefing" class="briefing">
-    <div class="kicker"><i></i> SINGLE OPERATOR / 近未来战术行动</div>
-    <h1>逐室<br>突破<span>。</span></h1>
-    <p class="intro">一把霰弹枪，一条出路。<br>解救工程师，炸毁设施，抵挡增援。<br>六场行动，六种突围方式。</p>
-    <div class="brief-controls"><span><b>W A S D</b> 移动</span><span><b>← / →</b> 平滑连续转向</span><span><b>Q / E</b> 瞄准微调</span><span><b>空格</b> 按住连续开火</span><span><b>G</b> 投掷手雷</span><span><b>F</b> 开关门 / 交互</span><span><b>R</b> 换弹</span><span><b>SHIFT</b> 冲刺</span><span><b>V</b> 医疗包</span></div>
-    <button id="start" class="primary">开始突入 <span>Enter ↵</span></button>
-    <div class="chapter-preview"><span>01 解救护送</span><span>02 定点爆破</span><span>03 守点撤离</span><span>04 军械库拆弹</span><span>05 补给搬运</span><span>06 供电核心</span></div>
-    <small class="desktop-note">纯键盘 · 方向键选菜单 / Enter 确认 · M 声音</small>
+<canvas id="game" tabindex="0" aria-label="写实 2D 战术行动游戏，左右移动、跳跃、射击"></canvas>
+<header><a class="brand" href="./index.html"><span class="brand-icon">↗</span><b>BREACH</b><small>零界突入 / 室内行动</small></a><div class="header-actions"><button id="touchMode" aria-pressed="false" aria-label="切换触屏操作">触控 关</button><button id="music" aria-pressed="true">音乐 开</button><button id="sound" aria-pressed="true">声音 开</button><button id="pause" hidden>暂停 <kbd>P</kbd></button></div></header>
+<main id="title" class="title-screen">
+  <div class="title-content">
+  <h1 class="preparation-heading">干员与行动整备</h1>
+  <p class="intro">前六关全新行动：突袭、潜入、追车、爆破逃生、列车截击、据点争夺。</p>
+  <section class="equipment-card operator-card" aria-label="干员选择">
+    <label for="classSelect">干员选择 · 四种职业<select id="classSelect" aria-describedby="classDescription"></select></label>
+    <p id="classDescription" aria-live="polite"></p>
   </section>
-  <div id="preview-tag"><span>LIVE FEED / 01</span><strong>城市前哨</strong><small>解救 · 爆破 · 坚守</small></div>
-  <section id="hud" hidden aria-label="行动状态">
-    <div class="vitals"><div class="vital-title"><span>OPERATOR / JO</span><strong id="hp">100</strong></div><div class="health-track"><i id="hpFill"></i></div><div class="ammo"><strong id="mag">8</strong><span>/ <b id="reserve">48</b></span><small id="weaponState">SG-8 / 战术霰弹枪</small></div><div class="supplies"><span id="med">医疗包 2</span><span id="dash">冲刺就绪</span></div></div>
-    <div class="objective"><span id="chapter">01 / 城市前哨</span><strong id="objective">解救被困工程师</strong><small id="objectiveDetail">解救工程师并护送至出口。</small></div>
-    <div class="key-guide">WASD 移动 · ←/→ 按住转向 · Q/E 微调 · 空格 射击 · F 交互 · G 手雷 · R 换弹 · Shift 冲刺 · V 治疗 · Esc 暂停</div><div class="mission-meta"><span id="clock">00:00</span><span id="eliminated">已压制 0</span></div>
+  <section class="equipment-card" aria-label="行动装备">
+    <div class="equipment-grid"><label for="primarySelect">主武器 · 1<select id="primarySelect"></select></label><label for="secondarySelect">副武器 · 2<select id="secondarySelect"></select></label></div>
+    <p>只能携带一把主武器和一把副武器；手枪、刀共用副武器栏。</p>
   </section>
-  <div id="mission-panel" role="status" hidden></div><div id="prompt" hidden></div><div id="notice" role="status" aria-live="polite"></div>
-  <section id="overlay" class="overlay" hidden><div class="dialog"><span id="dialogLabel" class="kicker">行动暂停</span><h2 id="dialogTitle">稍作调整。</h2><p id="dialogText"></p><button id="resume" class="primary">继续行动 <span>→</span></button><button id="next" class="primary" hidden>下一关 <span>→</span></button><button id="restart" class="secondary">重试本关</button><button id="quit" class="text-button">返回开始界面</button></div></section>
-  <dialog id="quitDialog"><h2>结束这次行动？</h2><p>返回开始界面后，本次关卡进度会重置。</p><div><button id="cancelQuit" class="secondary">继续游戏</button><button id="confirmQuit" class="primary">返回开始</button></div></dialog>
-  <noscript>请在支持 JavaScript 的浏览器中打开游戏。</noscript>
-  <script src="levels.js"></script><script src="render.js"></script><script src="missions.js"></script><script src="extra-missions.js"></script><script src="game.js"></script>
+  <div class="mission-card"><div class="mission-card-head"><label for="levelSelect">战役行动 · 按顺序解锁</label><span id="missionPlace"></span></div><select id="levelSelect" aria-label="选择已解锁的战役关卡"></select><p id="missionStory"></p><details class="mission-instructions"><summary>查看行动目标</summary><p id="missionBrief"></p><small id="missionSteps"></small></details></div>
+  <details class="controls-help"><summary>查看操作说明</summary><p class="mobile-help">左侧摇杆移动、上拨跳跃、下拨慢行。右侧按住开火，可同时移动和射击；其余按钮可交互、切枪、换弹、投雷、治疗、冲刺和释放技能。靠近楼梯可直接上下走；摇杆下拨时再点跳跃，可从上层落下。遇到 F 提示就点「交互」，拆弹可用方向按钮或摇杆。</p><div class="control-grid"><span><b>A / D 或 ← →</b>左右移动</span><span><b>W / ↑</b>跳跃</span><span><b>空格 / J</b>射击 / 挥刀</span><span><b>F</b>交互 / 撤离</span><span><b>1 / 2</b>主武器 / 副武器</span><span><b>C</b>职业技能</span><span><b>G / R / V</b>投雷 / 换弹 / 治疗</span></div></details>
+  </div>
+  <div class="title-actions">
+  <button id="start" class="primary">开始行动 <span>ENTER ↵</span></button>
+  <div class="title-foot"><span>SHIFT 冲刺 · Q / E 向上 / 下瞄准</span><span>可离线游玩</span></div>
+  </div>
+</main>
+<div class="scene-label"><span>FIELD NOTES / 2026</span><strong>每一扇门后，都有新的任务。</strong><small>穿过走廊与检修夹层 · 掩护队友 · 完成行动</small></div>
+<section id="hud" hidden aria-label="战斗状态">
+  <div class="objective-strip"><div><span id="chapter"></span><strong id="objective"></strong></div><div class="mission-progress"><small id="detail"></small><b id="direction"></b></div></div>
+  <div class="vitals"><div class="health-row"><span>行动员 / JO</span><strong id="health">100</strong></div><div class="health-track"><i id="healthFill"></i></div><div class="weapon-row"><b id="ammo">8</b><span>/ <strong id="reserve">48</strong></span><small id="weaponName">1 · M870 霰弹枪</small></div><div class="supplies-row"><span id="supplies"></span><small id="weaponStatus"></small></div></div>
+  <div id="skillStatus" role="status"></div>
+  <div class="bottom-guide">A/D 移动 · W/↑ 跳跃 · 空格 攻击 · F 交互 · 1/2 主副武器 · C 技能</div><div class="clock"><span>行动时间</span><b id="clock">00:00</b></div>
+</section>
+<div id="notice" role="status" aria-live="polite" hidden></div>
+<div id="codePanel" hidden><small>按顺序输入方向键 · F 退出</small><strong id="codeSequence"></strong></div>
+<section id="overlay" class="overlay" hidden><div class="dialog"><span id="overlayLabel" class="eyebrow"></span><h2 id="overlayTitle"></h2><p id="overlayText"></p><button id="resume" class="primary">继续行动 →</button><button id="next" class="primary" hidden>下一关 →</button><button id="restart" class="secondary">重试本关</button><button id="menu" class="text-button">返回选关</button></div></section>
+<div id="mobileControls" aria-label="触屏战斗操作">
+  <div class="movement-pad"><div id="moveStick" role="group" aria-label="移动摇杆，向上拨动跳跃"><span class="stick-directions" aria-hidden="true">✥</span><i id="stickThumb"></i></div><small>左右移动 · 上拨跳跃</small></div>
+  <div class="mobile-combat">
+    <div class="mobile-tools"><button data-mobile-action="switchWeapon" id="mobileWeapon">切枪</button><button data-mobile-action="reload">换弹</button><button data-mobile-action="grenade" id="mobileGrenade">手雷</button><button data-mobile-action="heal">治疗</button><button data-mobile-action="dash">冲刺</button><button data-mobile-action="aim" id="mobileAim" aria-pressed="false">平瞄</button></div>
+    <div class="mobile-main"><button data-mobile-action="skill" id="mobileSkill">技能</button><button data-mobile-action="interact">交互</button><button data-mobile-action="jump">跳跃</button><button data-mobile-hold="Space" id="mobileFire">开火</button></div>
+  </div>
+  <div id="mobileCode" aria-label="拆弹方向输入"><button data-mobile-code="ArrowUp" aria-label="输入上">↑</button><button data-mobile-code="ArrowLeft" aria-label="输入左">←</button><button data-mobile-code="ArrowDown" aria-label="输入下">↓</button><button data-mobile-code="ArrowRight" aria-label="输入右">→</button><button data-mobile-action="interact">退出面板</button></div>
+</div>
+<p id="mobileHint">横屏可获得更宽视野 · 支持同时移动和射击</p>
+<noscript>请启用 JavaScript 后游玩。</noscript>
+<script src="side-levels.js"></script><script src="action-missions.js"></script><script src="vertical-levels.js"></script><script src="story-campaign.js"></script><script src="side-renderer.js"></script><script src="realistic-renderer.js"></script><script src="scene-environment.js"></script><script src="action-renderer.js"></script><script src="vertical-renderer.js"></script><script src="side-audio.js"></script><script src="side-game.js"></script><script src="mobile-controls.js"></script>
 </body></html>
+
+
